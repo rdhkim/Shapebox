@@ -1,7 +1,9 @@
 import React from 'react'
-import { Main } from '../src/Main'
+import dynamic from 'next/dynamic'
 
 const Index = () => {
+  const DynamicMain = dynamic(() => import('@/Main').then((mod) => mod.Main), { ssr: false })
+
   return (
     <>
       <style global jsx>{`
@@ -15,7 +17,7 @@ const Index = () => {
         width: 100%
       }
     `}</style>
-      <Main />
+      <DynamicMain />
     </>
   )
 }

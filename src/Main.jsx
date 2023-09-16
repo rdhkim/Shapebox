@@ -1,11 +1,13 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Canvas } from '@react-three/fiber'
 import { Cube, Sphere, Tetrahedron, FloorPlane } from './Shapes'
 import { OrbitControls, useCursor } from '@react-three/drei'
+import { hoveringShapeStore } from './stores'
+import { useAtomValue } from 'jotai'
 
 export const Main = () => {
-    const [hovered, hover] = useState(false)
-    // useCursor(hovered)
+    const hoveringShape = useAtomValue(hoveringShapeStore)
+    useCursor(hoveringShape)
 
     return (
         <div id="canvas-container" style={{
@@ -19,22 +21,18 @@ export const Main = () => {
                 }}
                 camera={{
                     position: [0, 0, 5]
-                }}
-            >
-                <Cube
-                    onPointerOver={() => hover(true)}
-                    onPointerOut={() => hover(false)}
+                }}>
+                <OrbitControls
+                    enabled={!hoveringShape}
+                    zoomSpeed={0}
+                    minPolarAngle={Math.PI / 6}
+                    maxPolarAngle={Math.PI - Math.PI / 6}
+                    enablePan={false}
                 />
-                <Sphere
-                    onPointerOver={() => hover(true)}
-                    onPointerOut={() => hover(false)}
-                />
-                <Tetrahedron
-                    onPointerOver={() => hover(true)}
-                    onPointerOut={() => hover(false)}
-                />
+                <Cube />
+                <Sphere />
+                <Tetrahedron />
                 <FloorPlane />
-                <OrbitControls enabled={!hovered} />
             </Canvas>
         </div>
     )
